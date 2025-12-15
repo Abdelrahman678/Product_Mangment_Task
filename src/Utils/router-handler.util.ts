@@ -1,5 +1,6 @@
 import { Application, Request, Response, NextFunction } from "express";
 import { productController } from "../Modules";
+import { globalErrorHandler } from "../Middlewares";
 
 /* Router Handler */
 export const routerHandler = (app: Application) => {
@@ -14,5 +15,6 @@ export const routerHandler = (app: Application) => {
     res.status(404).json({ message: "Route not found" });
   });
 
-  /* Global Error Handler Middleware call here */
+  /* Global Error Handler Middleware call */
+  app.use(globalErrorHandler);
 };
