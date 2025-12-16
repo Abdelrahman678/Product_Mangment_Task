@@ -6,6 +6,10 @@ import {
   UpdateProductDTO,
 } from "../product.dto";
 import { IError, ProductType, systemRoles } from "../../../Types/types";
+import NodeCache from "node-cache";
+
+/* Initialize cache with 5 minutes expiry and checkperiod 60 seconds  */
+const cache = new NodeCache({ stdTTL: 300, checkperiod: 60 });
 
 /* === Create Product === */
 export const createProduct = async (req: Request, res: Response) => {
@@ -137,6 +141,20 @@ export const deleteProductService = async (req: Request, res: Response) => {
 
 /* === Get Product Statistics === */
 export const getProductStatsService = async (req: Request, res: Response) => {
+  /* cache key */
+  const cacheKey = "productStats"; // unique key for cached stats
+
+  /* Check cache first for stats*/
+  const cachedStats = cache.get(cacheKey);
+  if (cachedStats) {
+    return res.status(200).json({
+      success: true,
+      message: "Statistics retrieved successfully (from cache)",
+      data: cachedStats,
+    });
+  }
+
+  /* find database products */
   const products = await ProductModel.find();
 
   if (!products || products.length === 0) {
@@ -213,6 +231,9 @@ export const getProductStatsService = async (req: Request, res: Response) => {
       totalValue: formatNumber(data.totalValue),
     })),
   };
+
+  /* save stats in cache */
+  cache.set(cacheKey, stats);
 
   return res.status(200).json({
     success: true,
