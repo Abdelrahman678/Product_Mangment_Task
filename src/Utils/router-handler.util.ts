@@ -9,7 +9,7 @@ export const routerHandler = (app: Application) => {
     res.status(200).json({ message: "Welcome to Product Mangment App!" });
   });
   /* Product Routes */
-  app.use("/product", productController);
+  app.use("/api/products", productController);
   /* Not Found Route */
   app.use((req: Request, res: Response, next: NextFunction) => {
     res.status(404).json({ message: "Route not found" });

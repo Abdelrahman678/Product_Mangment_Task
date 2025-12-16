@@ -9,28 +9,30 @@ export const authorizationMiddleware = (allowedRoles: string[]) => {
       /* No role provided → 401 Unauthorized */
       if (!role) {
         const error: IError = {
-          message: "Unauthorized: Missing X-User-Role header",
+          message: "Authentication required",
           status: 401,
           code: "UNAUTHORIZED",
+          details: "X-User-Role header is missing or invalid",
         };
         return res.status(401).json({
           success: false,
           message: error.message,
-          error: { code: error.code, details: null },
+          error: { code: error.code, details: error.details },
         });
       }
 
       /* Role not allowed → 403 Forbidden */
       if (!allowedRoles.includes(role)) {
         const error: IError = {
-          message: "Forbidden: You are not authorized to perform this action",
+          message: "You do not have permission to perform this action",
           status: 403,
           code: "FORBIDDEN",
+          details: "Admin role required for this operation",
         };
         return res.status(403).json({
           success: false,
           message: error.message,
-          error: { code: error.code, details: null },
+          error: { code: error.code, details: error.details },
         });
       }
 
