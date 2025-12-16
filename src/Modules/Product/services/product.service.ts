@@ -31,6 +31,9 @@ export const createProduct = async (req: Request, res: Response) => {
   const product = new ProductModel(body);
   await product.save();
 
+  /* to ensure consistent data */
+  cache.del("productStats");
+
   return res.status(201).json({
     success: true,
     message: "Product created successfully",
@@ -106,6 +109,8 @@ export const updateProduct = async (req: Request, res: Response) => {
       details: { resource: "Product", id },
     } as IError;
   }
+  /* to ensure consistent data */
+  cache.del("productStats");
 
   return res.status(200).json({
     success: true,
@@ -128,6 +133,8 @@ export const deleteProductService = async (req: Request, res: Response) => {
       details: { resource: "Product", id },
     } as IError;
   }
+  /* to ensure consistent data */
+  cache.del("productStats");
 
   return res.status(200).json({
     success: true,
