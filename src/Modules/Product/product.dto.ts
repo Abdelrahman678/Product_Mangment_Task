@@ -21,3 +21,15 @@ export interface UpdateProductDTO {
   quantity?: number;
   updatedAt?: Date;
 }
+
+export interface getAllProductsDTO {
+  page?: number;
+  limit?: number;
+  category?: string;
+  type?: ProductType;
+  search?: string;
+  sort?: string;
+  order?: "asc" | "desc";
+  minPrice?: number;
+  maxPrice?: number;
+}
