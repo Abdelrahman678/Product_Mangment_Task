@@ -2,6 +2,8 @@
 export interface IError {
   message: string;
   status?: number;
+  code?: string;
+  details?: unknown;
   cause?: number;
   stack?: string;
 }
@@ -18,7 +20,13 @@ export interface IProduct {
   createdAt?: Date;
   updatedAt?: Date;
 }
+/* Product Type Enum */
 export enum ProductType {
   PUBLIC = "public",
   PRIVATE = "private",
+}
+/* System Roles Enum */
+export enum systemRoles {
+  ADMIN = "admin",
+  USER = "user",
 }
