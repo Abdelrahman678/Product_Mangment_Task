@@ -1,97 +1,104 @@
 # Product Management API
 
-A RESTful API service for managing products with **role-based access control**, **pagination**, **statistics**, **validation**, and **caching**.
+A **RESTful API** for managing products with **role-based access control**, **pagination**, **statistics**, **validation**, **rate limiting**, and **caching**.
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Runtime:** Node.js
-- **Framework:** Express.js
-- **Database:** MongoDB
-- **ODM:** Mongoose
-- **Validation:** Joi
-- **Caching:** node-cache
-- **Other:** TypeScript, express-rate-limit
+* **Runtime:** Node.js
+* **Framework:** Express.js
+* **Language:** TypeScript
+* **Database:** MongoDB
+* **ODM:** Mongoose
+* **Validation:** Joi
+* **Caching:** node-cache
+* **Security & Performance:** express-rate-limit
 
 ---
 
-## Features
+## ✨ Features
 
-- Role-Based Access Control (RBAC)
-- CRUD operations for products
-- Product statistics with caching
-- Pagination, search, filtering, and sorting
-- Comprehensive input validation with Joi
-- Unified response format
-- Error handling with proper HTTP status codes
-- Rate limiting
-- Caching for statistics endpoint (5 minutes)
+* Role-Based Access Control (RBAC)
+* Full CRUD operations for products
+* Product statistics with caching
+* Pagination, search, filtering, and sorting
+* Comprehensive request validation with Joi
+* Unified API response format
+* Centralized error handling with proper HTTP status codes
+* Rate limiting to prevent abuse
+* Cached statistics endpoint (TTL: 5 minutes)
 
 ---
 
 ## 🧰 Project Structure
 
+```text
 src/
 ├── DB/                         # Database connection and models
 │   ├── Models/                 # Mongoose models
-│   └── connection.ts           # Database connection
-├── Middlewares/                # Custom middlewares
-├── Modules/                    # Feature modules
+│   └── connection.ts           # MongoDB connection
+├── Middlewares/                # Custom middlewares (RBAC, error handling, rate limiting)
+├── Modules/                    # Feature-based modules
 │   └── Product/                # Product module
-│       ├── controllers/        # Request handlers
+│       ├── controllers/        # Request handlers (HTTP layer)
 │       ├── services/           # Business logic
-│       ├── dto/                # Data transfer objects
-│       └── schemas/            # Validation schemas
-├── Types/                      # TypeScript types
-├── Utils/                      # Utility functions
+│       ├── dto/                # Data Transfer Objects
+│       └── schemas/            # Joi validation schemas
+├── Types/                      # Global TypeScript types & enums
+├── Utils/                      # Shared utility functions
 └── index.ts                    # Application entry point
-
+```
 
 ---
 
 ## 🚀 Installation
 
-1. Clone the repository:
+1. **Clone the repository**
 
 ```bash
-git clone <https://github.com/Abdelrahman678/Product_Management_Task.git>
+git clone https://github.com/Abdelrahman678/Product_Management_Task.git
 cd Product_Management_Task
 ```
 
-2. Install dependencies:
+2. **Install dependencies**
 
 ```bash
 npm install
 ```
 
-3. Create a `.env` file:
+3. **Create environment variables**
 
----
-
-## Environment Variables
+Create a `.env` file in the project root:
 
 ```env
 PORT=3000
 MONGO_URI=mongodb://localhost:27017/Product_Management_App
 ```
 
-- `PORT` — Port for Express server
-- `MONGO_URI` — MongoDB connection string
+* `PORT` — Port on which the Express server runs
+* `MONGO_URI` — MongoDB connection string
 
 ---
 
-## ⚡Running the Project
+## ⚡ Running the Project
 
 ```bash
-# Development mode with hot-reload
+# Development mode (hot-reload)
 npm run start:dev
-# Production build and start
+
+# Production build
 npm run build
+
+# Start production server
 npm run start:prod
 ```
 
-The API will be available at `http://localhost:3000`.
+The API will be available at:
+
+```
+http://localhost:3000
+```
 
 ---
 
@@ -99,95 +106,125 @@ The API will be available at `http://localhost:3000`.
 
 ### 1. Create Product (Admin only)
 
-```
+```http
 POST /api/products
-Headers: X-User-Role: admin
-Body: { sku, name, description?, category, type?, price, discountPrice?, quantity }
-Response: 201 Created
+Headers:
+  X-User-Role: admin
+Body:
+  { sku, name, description?, category, type?, price, discountPrice?, quantity }
+Response:
+  201 Created
 ```
+
+---
 
 ### 2. Get All Products (Pagination + Search + Filter)
 
-```
+```http
 GET /api/products?page=1&limit=10&category=&type=&search=&sort=&order=&minPrice=&maxPrice=
-Headers: X-User-Role: admin | user
-Response: 200 OK with pagination
+Headers:
+  X-User-Role: admin | user
+Response:
+  200 OK (paginated result)
 ```
+
+---
 
 ### 3. Get Single Product
 
-```
+```http
 GET /api/products/:id
-Headers: X-User-Role: admin | user
-Response: 200 OK
+Headers:
+  X-User-Role: admin | user
+Response:
+  200 OK
 ```
+
+---
 
 ### 4. Update Product (Admin only)
 
-```
+```http
 PUT /api/products/:id
-Headers: X-User-Role: admin
-Body: Partial update (cannot update SKU)
-Response: 200 OK
+Headers:
+  X-User-Role: admin
+Body:
+  Partial update (SKU cannot be updated)
+Response:
+  200 OK
 ```
+
+---
 
 ### 5. Delete Product (Admin only)
 
-```
+```http
 DELETE /api/products/:id
-Headers: X-User-Role: admin
-Response: 200 OK
+Headers:
+  X-User-Role: admin
+Response:
+  200 OK
 ```
+
+---
 
 ### 6. Get Product Statistics (Admin only)
 
-```
+```http
 GET /api/products/stats
-Headers: X-User-Role: admin
-Response: 200 OK with statistics
+Headers:
+  X-User-Role: admin
+Response:
+  200 OK (statistics data)
 ```
 
 ---
 
-## Validation Rules
+## ✅ Validation Rules
 
-- **SKU:** Required, unique, alphanumeric, 3-50 chars
-- **Name:** Required, 3-200 chars
-- **Description:** Optional, max 1000 chars
-- **Category:** Required, 2-100 chars
-- **Type:** Enum: "public" | "private", default "public"
-- **Price:** Required, >0, max 2 decimals
-- **Discount Price:** Optional, ≥0 and < price
-- **Quantity:** Required, integer ≥0
-
----
-
-## Caching
-
-- Statistics endpoint (`/api/products/stats`) is cached for **5 minutes** using `node-cache`.
-- Cache is invalidated automatically on product create, update, or delete.
+* **SKU:** Required, unique, alphanumeric, 3–50 characters
+* **Name:** Required, 3–200 characters
+* **Description:** Optional, max 1000 characters
+* **Category:** Required, 2–100 characters
+* **Type:** Enum: `public | private`, default: `public`
+* **Price:** Required, greater than 0, up to 2 decimal places
+* **Discount Price:** Optional, ≥ 0 and less than `price`
+* **Quantity:** Required, integer ≥ 0
 
 ---
 
-## Pagination
+## 🧠 Caching
 
-- Default: `page=1`, `limit=10`
-- Response includes `pagination` object:
+* The statistics endpoint (`/api/products/stats`) is cached for **5 minutes** using `node-cache`.
+* Cache is automatically invalidated on **create**, **update**, or **delete** operations.
+
+---
+
+## 📄 Pagination
+
+* Default values:
+
+  * `page = 1`
+  * `limit = 10`
+
+* Pagination metadata example:
 
 ```json
-"pagination": {
-  "currentPage": 1,
-  "totalPages": 5,
-  "totalItems": 48,
-  "itemsPerPage": 10,
-  "hasNextPage": true,
-  "hasPreviousPage": false
+{
+  "pagination": {
+    "currentPage": 1,
+    "totalPages": 5,
+    "totalItems": 48,
+    "itemsPerPage": 10,
+    "hasNextPage": true,
+    "hasPreviousPage": false
+  }
 }
 ```
 
 ---
 
-## Error Handling
+## ❌ Error Handling
 
 Unified error response format:
 
@@ -197,24 +234,26 @@ Unified error response format:
   "message": "Validation failed",
   "error": {
     "code": "VALIDATION_ERROR",
-    "details": { ... }
+    "details": {}
   }
 }
-
 ```
 
-## Rate Limiting
+---
 
-The API implements rate limiting using `express-rate-limit` to prevent abuse and ensure fair usage:
+## 🚦 Rate Limiting
 
-- **Rate Limit**: 100 requests per 15 minutes per IP address
-- **Response**: 429 Too Many Requests when limit is exceeded
-- **Headers**:
-  - `X-RateLimit-Limit`: Maximum requests allowed in the window
-  - `X-RateLimit-Remaining`: Remaining requests in the current window
-  - `X-RateLimit-Reset`: Time when the rate limit resets (in UTC epoch seconds)
+The API uses `express-rate-limit` to ensure fair usage:
 
-Example rate limit exceeded response:
+* **Limit:** 100 requests per 15 minutes per IP
+* **Status Code:** `429 Too Many Requests`
+* **Response Headers:**
+
+  * `X-RateLimit-Limit`
+  * `X-RateLimit-Remaining`
+  * `X-RateLimit-Reset`
+
+Example response when the limit is exceeded:
 
 ```json
 {
@@ -224,15 +263,16 @@ Example rate limit exceeded response:
 
 ---
 
-## Common HTTP status codes used:
+## 📌 Common HTTP Status Codes
 
-- `200 OK` — GET, PUT, DELETE success
-- `201 Created` — POST success
-- `400 Bad Request` — Validation errors
-- `401 Unauthorized` — Missing/invalid role
-- `403 Forbidden` — Insufficient permissions
-- `404 Not Found` — Resource not found
-- `409 Conflict` — Duplicate SKU
-- `500 Internal Server Error` — Unexpected errors
+* `200 OK` — Successful GET, PUT, DELETE
+* `201 Created` — Successful POST
+* `400 Bad Request` — Validation errors
+* `401 Unauthorized` — Missing or invalid role
+* `403 Forbidden` — Insufficient permissions
+* `404 Not Found` — Resource not found
+* `409 Conflict` — Duplicate SKU
+* `500 Internal Server Error` — Unexpected server error
 
 ---
+
