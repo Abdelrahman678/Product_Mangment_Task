@@ -33,19 +33,20 @@ A RESTful API service for managing products with **role-based access control**, 
 ## 🧰 Project Structure
 
 src/
-├── DB/ # Database connection and models
-│ ├── Models/ # Mongoose models
-│ └── connection.ts # Database connection
-├── Middlewares/ # Custom middlewares
-├── Modules/ # Feature modules
-│ └── Product/ # Product module
-│ ├── controllers/ # Request handlers
-│ ├── services/ # Business logic
-│ ├── dto/ # Data transfer objects
-│ └── schemas/ # Validation schemas
-├── Types/ # TypeScript types
-├── Utils/ # Utility functions
-└── index.ts # Application entry point
+├── DB/                         # Database connection and models
+│   ├── Models/                 # Mongoose models
+│   └── connection.ts           # Database connection
+├── Middlewares/                # Custom middlewares
+├── Modules/                    # Feature modules
+│   └── Product/                # Product module
+│       ├── controllers/        # Request handlers
+│       ├── services/           # Business logic
+│       ├── dto/                # Data transfer objects
+│       └── schemas/            # Validation schemas
+├── Types/                      # TypeScript types
+├── Utils/                      # Utility functions
+└── index.ts                    # Application entry point
+
 
 ---
 
@@ -64,11 +65,7 @@ cd Product_Management_Task
 npm install
 ```
 
-3. Create a `.env` file based on `.env.example`:
-
-```bash
-cp .env.example .env
-```
+3. Create a `.env` file:
 
 ---
 
