@@ -20,7 +20,7 @@ export const routerHandler = (app: Application) => {
   app.use(limiter);
   /* Home Route */
   app.get("/", (req: Request, res: Response, next: NextFunction) => {
-    res.status(200).json({ message: "Welcome to Product Mangment App!" });
+    res.status(200).json({ message: "Welcome to Product Management App!" });
   });
   /* Product Routes */
   app.use("/api/products", productController);

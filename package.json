@@ -1,5 +1,5 @@
 {
-  "name": "product_mangment_task",
+  "name": "product_management_task",
   "version": "1.0.0",
   "main": "dist/index.js",
   "scripts": {

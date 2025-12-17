@@ -33,19 +33,19 @@ A RESTful API service for managing products with **role-based access control**, 
 ## 🧰 Project Structure
 
 src/
-├── DB/                  # Database connection and models
-│   ├── Models/          # Mongoose models
-│   └── connection.ts    # Database connection
-├── Middlewares/         # Custom middlewares
-├── Modules/             # Feature modules
-│   └── Product/         # Product module
-│       ├── controllers/ # Request handlers
-│       ├── services/    # Business logic
-│       ├── dto/        # Data transfer objects
-│       └── schemas/     # Validation schemas
-├── Types/               # TypeScript types
-├── Utils/               # Utility functions
-└── index.ts             # Application entry point
+├── DB/ # Database connection and models
+│ ├── Models/ # Mongoose models
+│ └── connection.ts # Database connection
+├── Middlewares/ # Custom middlewares
+├── Modules/ # Feature modules
+│ └── Product/ # Product module
+│ ├── controllers/ # Request handlers
+│ ├── services/ # Business logic
+│ ├── dto/ # Data transfer objects
+│ └── schemas/ # Validation schemas
+├── Types/ # TypeScript types
+├── Utils/ # Utility functions
+└── index.ts # Application entry point
 
 ---
 
@@ -54,8 +54,8 @@ src/
 1. Clone the repository:
 
 ```bash
-git clone <https://github.com/Abdelrahman678/Product_Mangment_Task.git>
-cd Product_Mangment_Task
+git clone <https://github.com/Abdelrahman678/Product_Management_Task.git>
+cd Product_Management_Task
 ```
 
 2. Install dependencies:
@@ -76,7 +76,7 @@ cp .env.example .env
 
 ```env
 PORT=3000
-MONGO_URI=mongodb://localhost:27017/Product_Mangment_App
+MONGO_URI=mongodb://localhost:27017/Product_Management_App
 ```
 
 - `PORT` — Port for Express server
@@ -205,6 +205,7 @@ Unified error response format:
 }
 
 ```
+
 ## Rate Limiting
 
 The API implements rate limiting using `express-rate-limit` to prevent abuse and ensure fair usage:
@@ -217,6 +218,7 @@ The API implements rate limiting using `express-rate-limit` to prevent abuse and
   - `X-RateLimit-Reset`: Time when the rate limit resets (in UTC epoch seconds)
 
 Example rate limit exceeded response:
+
 ```json
 {
   "message": "Too many requests, please try again later"
